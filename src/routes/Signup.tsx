@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { EmailStep } from '@/components/wizard/steps/EmailStep'
 import { OtpStep } from '@/components/wizard/steps/OtpStep'
 import { IdentityStep } from '@/components/wizard/steps/IdentityStep'
+import { PlaceStep } from '@/components/wizard/steps/PlaceStep'
 import { TOTAL_STEPS, useSignupStore } from '@/store/signupStore'
 
 /**
@@ -63,6 +64,7 @@ export function Signup() {
       return otpSent && !emailVerified ? <OtpStep /> : <EmailStep />
     }
     if (step === 2) return <IdentityStep />
+    if (step === 3) return <PlaceStep />
     return <PendingStep step={step} />
   }
 
