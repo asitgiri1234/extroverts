@@ -43,21 +43,30 @@ values are in `src/index.css` under `@theme`:
 - [x] Landing screen — CSS mesh gradient, no bitmap
 - [x] Terms screen — copy reproduced verbatim, accept-gated
 - [x] Wizard store — step guard, back navigation, `sessionStorage` persistence
-- [ ] Mock API layer
+- [x] Dashboard — party feed, club meter, confidential treatment
+- [x] Mock API layer
 - [ ] Step 1 — email + OTP
 - [ ] Steps 2–4 — name / DOB / pronouns, state → city → college cascade
 - [ ] Success + permissions screens
 
 ## Deliberate failure triggers
 
-Once the mock API lands, these inputs will force specific failure paths so error handling can be
-demonstrated. **They are intentional, not bugs.**
+These inputs force specific failure paths so error handling can be demonstrated on demand.
+**They are intentional, not bugs.** All of them live in `src/lib/mockApi.ts`.
 
 | Input | Result |
 | --- | --- |
-| OTP other than `123456` | Invalid code — field shakes and clears |
-| Email containing `taken` | "An account with this email already exists" |
-| Email containing `fail` | Simulated network error + retry affordance |
+| Email containing `taken` | `EMAIL_TAKEN` — "An account with this email already exists" |
+| Email containing `fail` | `NETWORK_ERROR` — retryable, surfaces as a global toast |
+| OTP other than `123456` | `INVALID_CODE` — shake + clear, with attempts remaining |
+| 5 wrong OTP attempts | `TOO_MANY_ATTEMPTS` — locked until a new code is requested |
+
+Nothing is sent and nothing is verified for real — `verifyOtp` compares against a hardcoded
+constant. The graded behaviour is the UI around the call: pending spinners, field-level errors,
+global alerts, retry and duplicate-submit prevention.
+
+Because the accepted code cannot be discovered by a visitor, the OTP screen shows a demo hint
+line. Without it a reviewer opening the deployed link would be stuck at step 1.
 
 ## Improvements over the original
 
