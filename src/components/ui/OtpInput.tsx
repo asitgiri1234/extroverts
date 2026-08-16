@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } from 'react'
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ClipboardEvent,
+  type KeyboardEvent,
+  type PointerEvent,
+} from 'react'
 import { cn } from '@/lib/cn'
 import { OTP_LENGTH } from '@/lib/mockApi'
 
@@ -60,15 +67,19 @@ export function OtpInput({
    * The value is a dense, left-aligned string — it cannot represent a gap. So
    * clicking an empty box past the end of what has been typed must not let a
    * digit land there: it would silently slide left into the first free slot.
-   * Redirect focus to that slot instead, which is where typing will actually go.
+   * Redirect to that slot instead, which is where typing will actually go.
+   *
+   * This has to run on pointerdown, not focus. Auto-advance calls focus()
+   * synchronously right after committing, before React has re-rendered, so a
+   * focus handler would still be reading the previous `value` and would bounce
+   * the caret back — making every second keystroke overwrite the box before it.
    */
-  function handleFocus(index: number, target: HTMLInputElement) {
+  function handlePointerDown(index: number, e: PointerEvent<HTMLInputElement>) {
     const firstEmpty = Math.min(value.length, length - 1)
     if (index > firstEmpty) {
+      e.preventDefault()
       focusAt(firstEmpty)
-      return
     }
-    target.select()
   }
 
   function commit(next: string) {
@@ -155,7 +166,8 @@ export function OtpInput({
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
             onPaste={handlePaste}
-            onFocus={(e) => handleFocus(i, e.target)}
+            onPointerDown={(e) => handlePointerDown(i, e)}
+            onFocus={(e) => e.target.select()}
             className={cn(
               'h-[58px] w-full min-w-0 rounded-[12px] border bg-card text-center',
               'text-[24px] font-semibold text-white tabular-nums outline-none',
