@@ -30,6 +30,8 @@ export const emptyProfile: ProfileDraft = {
 
 interface SignupState {
   termsAccepted: boolean
+  /** True once a code has been "sent" — step 1 shows the OTP screen instead. */
+  otpSent: boolean
   emailVerified: boolean
   /** Highest step the user has legitimately unlocked. Guards deep links. */
   maxStepReached: number
@@ -42,6 +44,7 @@ interface SignupState {
   completed: boolean
 
   acceptTerms: () => void
+  setOtpSent: (sent: boolean) => void
   markEmailVerified: () => void
   markCompleted: () => void
   patchProfile: (patch: Partial<ProfileDraft>) => void
@@ -57,6 +60,7 @@ export const useSignupStore = create<SignupState>()(
   persist(
     (set) => ({
       termsAccepted: false,
+      otpSent: false,
       emailVerified: false,
       maxStepReached: 1,
       step: 1,
@@ -65,6 +69,7 @@ export const useSignupStore = create<SignupState>()(
       profile: emptyProfile,
 
       acceptTerms: () => set({ termsAccepted: true }),
+      setOtpSent: (sent) => set({ otpSent: sent }),
       markEmailVerified: () => set({ emailVerified: true }),
       markCompleted: () => set({ completed: true }),
 
@@ -89,6 +94,7 @@ export const useSignupStore = create<SignupState>()(
       reset: () =>
         set({
           termsAccepted: false,
+          otpSent: false,
           emailVerified: false,
           maxStepReached: 1,
           step: 1,

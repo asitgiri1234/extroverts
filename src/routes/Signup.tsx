@@ -4,81 +4,76 @@ import { PhoneFrame } from '@/components/layout/PhoneFrame'
 import { StepTransition } from '@/components/wizard/StepTransition'
 import { StepHeader } from '@/components/ui/StepHeader'
 import { Button } from '@/components/ui/Button'
+import { EmailStep } from '@/components/wizard/steps/EmailStep'
+import { OtpStep } from '@/components/wizard/steps/OtpStep'
 import { TOTAL_STEPS, useSignupStore } from '@/store/signupStore'
 
-interface StepMeta {
-  title: string
-  subtitle: string
-}
+/**
+ * Placeholder for steps not yet built. Keeps navigation checkable end to end.
+ */
+function PendingStep({ step }: { step: number }) {
+  const back = useSignupStore((s) => s.back)
+  const next = useSignupStore((s) => s.next)
 
-/** Copy for each step. The bodies land in the next pass. */
-const STEPS: StepMeta[] = [
-  { title: "What's your email?", subtitle: "We'll send a code to make sure it's really you." },
-  { title: 'Tell us about you', subtitle: 'Just the basics — this is how others will see you.' },
-  { title: 'Where are you?', subtitle: 'Helps us show you parties that are actually nearby.' },
-  { title: 'Check everything over', subtitle: 'Fix anything that looks wrong before you finish.' },
-]
+  return (
+    <div className="flex flex-1 flex-col">
+      <StepHeader
+        step={step}
+        total={TOTAL_STEPS}
+        title="Coming next"
+        subtitle="Shell only — use Back and Continue to check navigation."
+        onBack={back}
+      />
+      <div className="flex-1 py-10">
+        <p className="rounded-[12px] border border-dashed border-line px-4 py-8 text-center text-[14px] text-fg-subtle">
+          Step {step} fields land in the next pass.
+        </p>
+      </div>
+      <Button onClick={next} disabled={step >= TOTAL_STEPS}>
+        {step >= TOTAL_STEPS ? 'Finish' : 'Continue'}
+      </Button>
+    </div>
+  )
+}
 
 export function Signup() {
   const step = useSignupStore((s) => s.step)
   const direction = useSignupStore((s) => s.direction)
   const termsAccepted = useSignupStore((s) => s.termsAccepted)
-  const next = useSignupStore((s) => s.next)
-  const back = useSignupStore((s) => s.back)
+  const otpSent = useSignupStore((s) => s.otpSent)
+  const emailVerified = useSignupStore((s) => s.emailVerified)
 
-  const headingRef = useRef<HTMLDivElement>(null)
+  const paneRef = useRef<HTMLDivElement>(null)
 
-  // Move focus to the new step's heading so keyboard and screen-reader users are
-  // not left at the bottom of the page after advancing.
+  // Step 1 has two panes, so key the transition on the pane rather than the step.
+  const paneKey = step === 1 ? (otpSent && !emailVerified ? '1-otp' : '1-email') : String(step)
+
+  // Move focus into the new pane so keyboard and screen-reader users are not
+  // stranded at the bottom of the page after advancing.
   useEffect(() => {
-    headingRef.current?.focus()
-  }, [step])
+    paneRef.current?.focus()
+  }, [paneKey])
 
   // The wizard is only reachable once the terms gate has been passed.
   if (!termsAccepted) return <Navigate to="/terms" replace />
 
-  const meta = STEPS[step - 1]
+  function renderStep() {
+    if (step === 1) {
+      return otpSent && !emailVerified ? <OtpStep /> : <EmailStep />
+    }
+    return <PendingStep step={step} />
+  }
 
   return (
     <PhoneFrame>
-      <div className="flex min-h-dvh flex-col px-6 pt-6 pb-8 sm:px-8">
-        <StepHeader
-          step={step}
-          total={TOTAL_STEPS}
-          title={meta.title}
-          subtitle={meta.subtitle}
-          canGoBack={step > 1}
-          onBack={back}
-        />
-
-        <div
-          ref={headingRef}
-          tabIndex={-1}
-          className="flex flex-1 flex-col outline-none"
-          aria-live="polite"
-        >
-          <StepTransition stepKey={step} direction={direction}>
-            <div className="py-10">
-              <p className="rounded-[12px] border border-dashed border-line px-4 py-8 text-center text-[14px] text-fg-subtle">
-                Step {step} fields land in the next pass.
-                <br />
-                Shell only — use Back and Continue to check navigation.
-              </p>
-            </div>
-          </StepTransition>
-        </div>
-
-        <div className="space-y-3">
-          <Button onClick={next} disabled={step >= TOTAL_STEPS}>
-            {step >= TOTAL_STEPS ? 'Finish' : 'Continue'}
-          </Button>
-
-          {step > 1 && (
-            <Button variant="ghost" onClick={back}>
-              Back
-            </Button>
-          )}
-        </div>
+      <div
+        ref={paneRef}
+        tabIndex={-1}
+        className="flex min-h-dvh flex-col px-6 pt-6 pb-8 outline-none sm:px-8"
+      >
+        <StepTransition stepKey={paneKey} direction={direction}>
+          <div className="flex min-h-[calc(100dvh-56px)] flex-col">{renderStep()}</div>
+        </StepTransition>
       </div>
     </PhoneFrame>
   )
