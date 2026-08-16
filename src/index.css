@@ -15,11 +15,17 @@
 @theme {
   --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
 
-  /* Surfaces — the app is pure black, with cards lifted a few points above it. */
+  /*
+   * Surfaces. Note the inversion: the auth screens are pure black, but on the
+   * dashboard the page sits at #151515 and the cards are DARKER (#010101).
+   * Both values measured off the reference screenshots.
+   */
   --color-ink: #000000;
+  --color-app: #151515;
+  --color-card: #010101;
   --color-surface: #0b0b0c;
-  --color-surface-2: #141416;
-  --color-surface-3: #1c1c1f;
+  --color-surface-2: #1c1c1c;
+  --color-surface-3: #252525;
 
   /* Hairlines */
   --color-line: rgb(255 255 255 / 0.14);
