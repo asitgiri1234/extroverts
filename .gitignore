@@ -24,4 +24,9 @@ dist-ssr
 *.sw?
 
 # Reference captures of the original app — kept local, not published.
+# Both the folder and any loose copies dropped at the repo root.
 photo&vid/
+WhatsApp Image*
+WhatsApp Video*
+*.jpeg
+*.mp4
