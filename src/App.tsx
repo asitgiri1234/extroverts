@@ -3,6 +3,7 @@ import { Toaster } from 'sonner'
 import { Landing } from '@/routes/Landing'
 import { Terms } from '@/routes/Terms'
 import { Dashboard } from '@/routes/Dashboard'
+import { Signup } from '@/routes/Signup'
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/terms" element={<Terms />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

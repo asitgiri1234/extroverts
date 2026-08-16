@@ -36,8 +36,14 @@ interface SignupState {
   step: number
   profile: ProfileDraft
 
+  /** Travel direction of the last move, so transitions slide the right way. */
+  direction: number
+  /** Set once submitProfile resolves; gates the success screen. */
+  completed: boolean
+
   acceptTerms: () => void
   markEmailVerified: () => void
+  markCompleted: () => void
   patchProfile: (patch: Partial<ProfileDraft>) => void
   goToStep: (step: number) => void
   next: () => void
@@ -54,24 +60,31 @@ export const useSignupStore = create<SignupState>()(
       emailVerified: false,
       maxStepReached: 1,
       step: 1,
+      direction: 1,
+      completed: false,
       profile: emptyProfile,
 
       acceptTerms: () => set({ termsAccepted: true }),
       markEmailVerified: () => set({ emailVerified: true }),
+      markCompleted: () => set({ completed: true }),
 
       patchProfile: (patch) => set((s) => ({ profile: { ...s.profile, ...patch } })),
 
-      // Forward jumps are clamped to what the user has actually unlocked.
+      // Forward jumps are clamped to what the user has actually unlocked, so a
+      // pasted URL or a stale history entry cannot skip validation.
       goToStep: (step) =>
-        set((s) => ({ step: Math.min(Math.max(step, 1), Math.min(s.maxStepReached, TOTAL_STEPS)) })),
+        set((s) => {
+          const target = Math.min(Math.max(step, 1), Math.min(s.maxStepReached, TOTAL_STEPS))
+          return { step: target, direction: target >= s.step ? 1 : -1 }
+        }),
 
       next: () =>
         set((s) => {
           const step = Math.min(s.step + 1, TOTAL_STEPS)
-          return { step, maxStepReached: Math.max(s.maxStepReached, step) }
+          return { step, maxStepReached: Math.max(s.maxStepReached, step), direction: 1 }
         }),
 
-      back: () => set((s) => ({ step: Math.max(s.step - 1, 1) })),
+      back: () => set((s) => ({ step: Math.max(s.step - 1, 1), direction: -1 })),
 
       reset: () =>
         set({
@@ -79,6 +92,8 @@ export const useSignupStore = create<SignupState>()(
           emailVerified: false,
           maxStepReached: 1,
           step: 1,
+          direction: 1,
+          completed: false,
           profile: emptyProfile,
         }),
     }),
