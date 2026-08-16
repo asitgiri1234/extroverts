@@ -69,7 +69,9 @@ export const useSignupStore = create<SignupState>()(
       profile: emptyProfile,
 
       acceptTerms: () => set({ termsAccepted: true }),
-      setOtpSent: (sent) => set({ otpSent: sent }),
+      // Step 1 has two panes, so the pane swap sets direction too — otherwise
+      // returning to the email screen slides forward like an advance.
+      setOtpSent: (sent) => set({ otpSent: sent, direction: sent ? 1 : -1 }),
       markEmailVerified: () => set({ emailVerified: true }),
       markCompleted: () => set({ completed: true }),
 

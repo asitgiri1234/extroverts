@@ -56,6 +56,21 @@ export function OtpInput({
     refs.current[Math.min(Math.max(index, 0), length - 1)]?.focus()
   }
 
+  /**
+   * The value is a dense, left-aligned string — it cannot represent a gap. So
+   * clicking an empty box past the end of what has been typed must not let a
+   * digit land there: it would silently slide left into the first free slot.
+   * Redirect focus to that slot instead, which is where typing will actually go.
+   */
+  function handleFocus(index: number, target: HTMLInputElement) {
+    const firstEmpty = Math.min(value.length, length - 1)
+    if (index > firstEmpty) {
+      focusAt(firstEmpty)
+      return
+    }
+    target.select()
+  }
+
   function commit(next: string) {
     const trimmed = next.slice(0, length)
     onChange(trimmed)
@@ -93,7 +108,7 @@ export function OtpInput({
         focusAt(index - 1)
       }
 
-      onChange(chars.join('').replace(/\s/g, ''))
+      onChange(chars.join(''))
       return
     }
 
@@ -140,7 +155,7 @@ export function OtpInput({
             onChange={(e) => handleChange(i, e.target.value)}
             onKeyDown={(e) => handleKeyDown(i, e)}
             onPaste={handlePaste}
-            onFocus={(e) => e.target.select()}
+            onFocus={(e) => handleFocus(i, e.target)}
             className={cn(
               'h-[58px] w-full min-w-0 rounded-[12px] border bg-card text-center',
               'text-[24px] font-semibold text-white tabular-nums outline-none',
