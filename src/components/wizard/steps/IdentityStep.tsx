@@ -69,7 +69,7 @@ export function IdentityStep() {
         onBack={handleBack}
       />
 
-      <div className="mt-8 flex-1 space-y-5">
+      <div className="mt-8 flex-1 space-y-5 pb-8">
         <TextField
           {...register('name')}
           label="Your name"

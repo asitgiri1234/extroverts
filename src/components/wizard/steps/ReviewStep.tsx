@@ -114,7 +114,7 @@ export function ReviewStep() {
         onBack={back}
       />
 
-      <div className="mt-8 flex-1 space-y-3">
+      <div className="mt-8 flex-1 space-y-3 pb-6">
         <SummaryCard
           title="Account"
           onEdit={editEmail}

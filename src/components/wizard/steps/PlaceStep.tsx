@@ -73,7 +73,7 @@ export function PlaceStep() {
         onBack={handleBack}
       />
 
-      <div className="mt-8 flex-1 space-y-5">
+      <div className="mt-8 flex-1 space-y-5 pb-8">
         <Controller
           control={control}
           name="state"

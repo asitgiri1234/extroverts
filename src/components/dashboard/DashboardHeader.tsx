@@ -3,7 +3,7 @@ import { BellIcon, ChatIcon, VipTicketIcon } from '@/components/icons'
 
 export function DashboardHeader({ vipCount = 0 }: { vipCount?: number }) {
   return (
-    <header className="flex items-center justify-between px-5 pt-4 pb-3">
+    <header className="flex items-center justify-between pt-5 pb-4">
       <Logo className="text-[34px] text-white" />
 
       <div className="flex items-center gap-4">

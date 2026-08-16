@@ -101,7 +101,7 @@ export function OtpStep() {
         onBack={() => setOtpSent(false)}
       />
 
-      <div className="mt-8 flex-1">
+      <div className="mt-8 flex-1 pb-8">
         <OtpInput
           value={code}
           onChange={handleCodeChange}

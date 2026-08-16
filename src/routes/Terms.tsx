@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import { Logo } from '@/components/brand/Logo'
 import { Button } from '@/components/ui/Button'
-import { PhoneFrame } from '@/components/layout/PhoneFrame'
+import { Screen, Container } from '@/components/layout/Screen'
 import { useSignupStore } from '@/store/signupStore'
 
 export function Terms() {
@@ -14,13 +14,13 @@ export function Terms() {
   }
 
   return (
-    <PhoneFrame>
-      <div className="flex min-h-dvh flex-col px-6 pt-10 pb-10 sm:px-8">
-        <Logo className="text-[38px] text-white" />
+    <Screen>
+      <Container size="md" className="flex min-h-dvh flex-col py-8 sm:py-12">
+        <Logo className="text-[38px] text-white sm:text-[44px]" />
 
         <div className="flex flex-1 items-center py-10">
           {/* Copy is reproduced verbatim from the app's terms screen. */}
-          <p className="text-[26px] leading-[1.22] font-extrabold tracking-[-0.005em] text-white uppercase sm:text-[28px]">
+          <p className="text-[26px] leading-[1.22] font-extrabold tracking-[-0.005em] text-white uppercase sm:text-[32px] lg:text-[38px]">
             By using this app, you're agreeing to keep things fun, safe, and respectful… and also
             agreeing to our terms and conditions. Politeness is a must—treat others how you'd want
             to be treated. Everyone here is looking for reasons to{' '}
@@ -29,21 +29,23 @@ export function Terms() {
           </p>
         </div>
 
-        <p className="text-[15px] text-fg-muted">
-          To proceed, accept{' '}
-          <a
-            href="#"
-            onClick={(e) => e.preventDefault()}
-            className="text-white underline-offset-2 hover:underline"
-          >
-            Terms and Conditions
-          </a>
-        </p>
+        <div className="max-w-[440px]">
+          <p className="text-[15px] text-fg-muted">
+            To proceed, accept{' '}
+            <a
+              href="#"
+              onClick={(e) => e.preventDefault()}
+              className="text-white underline-offset-2 hover:underline"
+            >
+              Terms and Conditions
+            </a>
+          </p>
 
-        <Button className="mt-4" onClick={handleAccept}>
-          Accept
-        </Button>
-      </div>
-    </PhoneFrame>
+          <Button className="mt-4" onClick={handleAccept}>
+            Accept
+          </Button>
+        </div>
+      </Container>
+    </Screen>
   )
 }

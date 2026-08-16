@@ -11,7 +11,7 @@ export function ClubCard({ tier, progress, tokens }: ClubCardProps) {
   const pct = Math.round(Math.min(Math.max(progress, 0), 1) * 100)
 
   return (
-    <section className="px-5">
+    <section>
       <p className="text-[15px] tracking-[0.04em] text-white/85 uppercase">Your club</p>
 
       <div className="mt-2 rounded-[12px] border-[1.6px] border-white pt-3">

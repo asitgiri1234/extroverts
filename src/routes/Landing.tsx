@@ -2,39 +2,39 @@ import { useNavigate } from 'react-router-dom'
 import { MeshGradient } from '@/components/backgrounds/MeshGradient'
 import { Logo } from '@/components/brand/Logo'
 import { Button } from '@/components/ui/Button'
-import { PhoneFrame } from '@/components/layout/PhoneFrame'
 
 export function Landing() {
   const navigate = useNavigate()
 
   return (
-    <PhoneFrame>
-      <div className="relative flex min-h-full flex-col">
-        <MeshGradient />
+    <div className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-ink">
+      <MeshGradient />
 
-        {/* Logo sits just above the optical centre, as in the app. */}
-        <div className="relative flex flex-1 items-center justify-center pt-16">
-          <Logo className="text-[64px] text-white sm:text-[76px]" />
-        </div>
+      {/* Logo sits above the optical centre, as in the app. */}
+      <div className="relative flex flex-1 items-center justify-center pt-20 pb-8">
+        <Logo className="text-[72px] text-white sm:text-[96px] lg:text-[120px]" />
+      </div>
 
-        <div className="relative px-6 pb-10 sm:px-8">
-          <p className="text-center text-[15px] font-bold tracking-[0.06em] text-white uppercase sm:text-base">
+      <div className="relative px-5 pb-12 sm:px-8 lg:pb-20">
+        <div className="mx-auto w-full max-w-[640px] text-center">
+          <p className="text-[15px] font-bold tracking-[0.08em] text-white uppercase sm:text-[17px]">
             An app only for
           </p>
-          <h1 className="mt-1 text-center text-[44px] leading-[1.05] font-extrabold tracking-[-0.01em] text-white uppercase sm:text-[54px]">
+          <h1 className="mt-1 text-[48px] leading-[1.03] font-extrabold tracking-[-0.01em] text-white uppercase sm:text-[68px] lg:text-[84px]">
             Extroverts
           </h1>
 
-          <p className="mt-5 text-center text-[15px] leading-snug text-white/90">
+          <p className="mx-auto mt-5 max-w-[520px] text-[15px] leading-snug text-white/90 sm:text-[17px]">
             <span className="font-semibold text-danger">Warning:</span> Entering may lead to
             spontaneous dancing and unsolicited high-fives!
           </p>
 
-          <Button className="mt-5" onClick={() => navigate('/terms')}>
-            Continue
-          </Button>
+          {/* The CTA keeps a tappable measure rather than stretching to the page. */}
+          <div className="mx-auto mt-7 max-w-[440px]">
+            <Button onClick={() => navigate('/terms')}>Continue</Button>
+          </div>
         </div>
       </div>
-    </PhoneFrame>
+    </div>
   )
 }

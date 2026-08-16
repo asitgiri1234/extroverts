@@ -67,7 +67,7 @@ export function EmailStep() {
         canGoBack={false}
       />
 
-      <div className="mt-8 flex-1">
+      <div className="mt-8 flex-1 pb-8">
         <TextField
           {...register('email')}
           label="Email address"

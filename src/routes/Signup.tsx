@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Navigate } from 'react-router-dom'
-import { PhoneFrame } from '@/components/layout/PhoneFrame'
+import { AuthLayout } from '@/components/layout/AuthLayout'
 import { StepTransition } from '@/components/wizard/StepTransition'
 import { EmailStep } from '@/components/wizard/steps/EmailStep'
 import { OtpStep } from '@/components/wizard/steps/OtpStep'
@@ -44,16 +44,12 @@ export function Signup() {
   }
 
   return (
-    <PhoneFrame>
-      <div
-        ref={paneRef}
-        tabIndex={-1}
-        className="flex min-h-dvh flex-col px-6 pt-6 pb-8 outline-none sm:px-8"
-      >
+    <AuthLayout>
+      <div ref={paneRef} tabIndex={-1} className="outline-none">
         <StepTransition stepKey={paneKey} direction={direction}>
-          <div className="flex min-h-[calc(100dvh-56px)] flex-col">{renderStep()}</div>
+          <div className="flex flex-col">{renderStep()}</div>
         </StepTransition>
       </div>
-    </PhoneFrame>
+    </AuthLayout>
   )
 }

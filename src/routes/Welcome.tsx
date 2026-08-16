@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { PhoneFrame } from '@/components/layout/PhoneFrame'
 import { MeshGradient } from '@/components/backgrounds/MeshGradient'
 import { Button } from '@/components/ui/Button'
 import { useSignupStore } from '@/store/signupStore'
@@ -66,36 +65,37 @@ export function Welcome() {
   }
 
   return (
-    <PhoneFrame>
-      <div className="relative flex min-h-dvh flex-col">
-        <MeshGradient />
+    <div className="relative flex min-h-dvh w-full flex-col overflow-hidden bg-ink">
+      <MeshGradient />
 
-        <div className="relative flex flex-1 flex-col items-center justify-center px-6 text-center">
-          <CheckBurst />
+      <div className="relative flex flex-1 flex-col items-center justify-center px-5 text-center sm:px-8">
+        <CheckBurst />
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.25, duration: 0.35 }}
-          >
-            <p className="mt-8 text-[15px] font-bold tracking-[0.06em] text-white uppercase">
-              You're in
-            </p>
-            <h1 className="mt-2 text-[40px] leading-[1.05] font-extrabold text-white uppercase">
-              Welcome{firstName ? `, ${firstName}` : ''}
-            </h1>
-            <p className="mt-4 text-[15px] leading-snug text-white/85" role="status">
-              Your profile is ready. Time to find people worth partying with.
-            </p>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25, duration: 0.35 }}
+          className="max-w-[620px]"
+        >
+          <p className="mt-8 text-[15px] font-bold tracking-[0.08em] text-white uppercase sm:text-[17px]">
+            You're in
+          </p>
+          <h1 className="mt-2 text-[44px] leading-[1.05] font-extrabold text-white uppercase sm:text-[60px] lg:text-[72px]">
+            Welcome{firstName ? `, ${firstName}` : ''}
+          </h1>
+          <p className="mt-4 text-[15px] leading-snug text-white/85 sm:text-[17px]" role="status">
+            Your profile is ready. Time to find people worth partying with.
+          </p>
+        </motion.div>
+      </div>
 
-        <div className="relative px-6 pb-10 sm:px-8">
+      <div className="relative px-5 pb-12 sm:px-8 lg:pb-20">
+        <div className="mx-auto w-full max-w-[440px]">
           <Button onClick={enterApp} loading={leaving}>
             Start exploring
           </Button>
         </div>
       </div>
-    </PhoneFrame>
+    </div>
   )
 }
