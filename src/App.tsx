@@ -4,6 +4,7 @@ import { Landing } from '@/routes/Landing'
 import { Terms } from '@/routes/Terms'
 import { Dashboard } from '@/routes/Dashboard'
 import { Signup } from '@/routes/Signup'
+import { Welcome } from '@/routes/Welcome'
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/welcome" element={<Welcome />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
